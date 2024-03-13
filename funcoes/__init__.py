@@ -21,8 +21,8 @@ def menu(tit = True, op='',  cor=36, str=''): #Menu principal | Tit = True = Vai
         print(f'\033[{cor}m-='*25, end='')
         print('-\033[m')
 
-
-def opcoes_menuprincipal(): #Se o n=True vai retornar com negrito
+#Opções de menu:
+def opcoes_menuprincipal():
     return'''\033[1m1 - Cadastrar um novo personagem
 2 - Vizualizar todos os personagens cadastrados na API
 3 - Deletar algum personagem
@@ -48,7 +48,7 @@ def opcoes_seeimagecharacter():
 2 - Cancelar\033[m'''
 
 
-def opcoes_updatecharacter():
+def opcoes_updatecharacter(): 
     return'''\033[1m1 - Atualizar as informações de um personagem
 2 - Cancelar\033[m'''
 
@@ -57,12 +57,12 @@ def linha(cor, num): #Criar uma linha onde o primeiro parâmetro é o código da
     print(f'\033[1;0{cor}m-\033[m'*num)
 
 
-def error(var):
+def error(var): #Mensagem de erro
     print(f'\033[1;31mERRO: "{var}" não é uma opção válida\033[m')
     print('\n\n')
 
 
-def backToMenu(function):
+def backToMenu(function): #Voltando para o menu principal, colocando a função como parâmetro
     sleep(0.6)
     print('Voltando para o \033[36mMenu Principal\033[m')
     sleep(0.6)
@@ -74,7 +74,7 @@ def see_image(link_imagem): # Abra o navegador padrão com o URL da imagem
     webbrowser.open(link_imagem, new=2)
 
 
-def verify_json(file_path):
+def verify_json(file_path): #Verificando se o arquivo está vazio
     try:
         with open(file_path, 'r') as file:
             data = json.load(file)

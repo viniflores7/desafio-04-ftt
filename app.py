@@ -2,7 +2,6 @@ from time import sleep
 import webbrowser #Biblioteca para abrir uma imagem no navegador
 import requests #Interagir com a API
 import json #Interagir com os arquivos JSON
-from flask import jsonify
 from funcoes import *
 
 
@@ -28,7 +27,7 @@ def main(): #Função principal para rodar o programa
             error(op)
 
 
-def new_character():
+def new_character(): #Adicionando um novo personagem na API
     linha(32,55)
     temp = dict()
     temp["Nome"] = str(input('Digite o nome do personagem: ')).strip().capitalize()
@@ -70,7 +69,7 @@ def new_character():
             error(op)
 
 
-def see_character(n=False): #Ver os personagens e a imagem cadastrada
+def see_character(n=False): #Ver os personagens Cadastrados na API
         if verify_json('./api/characters.json'): #Se não tiver nenhum personagem cadastrado
             linha(34, 50)
             print('Ainda não existe nenhum personagem cadastrado!')
@@ -107,7 +106,7 @@ def see_character(n=False): #Ver os personagens e a imagem cadastrada
                 backToMenu(main)
 
 
-def delete_character():
+def delete_character(): #Deletar um personagem pelo nome
     while True:
         see_character(n=False)
         menu(False, opcoes_deletecharacter(), 30)
@@ -135,7 +134,7 @@ def delete_character():
             error(op)
 
 
-def update_character():
+def update_character(): #Atualizar uma informação específica do personagem
     see_character(n=False)
     menu(False, opcoes_updatecharacter(), 37)
     op = str(input('\033[1mOpção =--> \033[m')).strip()
