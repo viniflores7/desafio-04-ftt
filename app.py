@@ -87,7 +87,7 @@ def see_character(n=False): #Ver os personagens e a imagem cadastrada
                         if isinstance(character, dict):  # Verifica se cada item da lista é um dicionário
                             print(f"Nome: {character.get('Nome')}")
                             print(f"Descrição: {character.get('Descrição')}")
-                            print(f"Link para imagem: {(character.get('Link'))[0:20]}...") # Deixando o Link menor
+                            print(f"Link: {(character.get('Link'))[0:20]}...") # Deixando o Link menor
                             print(f"Programa: {character.get('Programa')}")
                             print(f"Animador: {character.get('Animador')}")
                             linha(34, 50)
@@ -135,6 +135,52 @@ def delete_character():
             error(op)
 
 
+def update_character():
+    see_character(n=False)
+    menu(False, opcoes_updatecharacter(), 37)
+    op = str(input('\033[1mOpção =--> \033[m')).strip()
+    if op == '1':        
+        nome = str(input('Digite o nome do personagem que você deseja atualizar algum dado: ')).capitalize().strip()
+        conf = str(input(f'Você confirma o nome digitado? [S/N] \033[1m{nome}\033[m ')).strip().upper()
+        if conf != 'S':
+            backToMenu(main)
+        else:
+            response = requests.get(f'{url}/{nome}') #Vendo se o personagem existe
+            if response.status_code == 200:
+                while True:
+                    new = str(input('Digite o nome da categoria que você quer alterar: [0 para cancelar toda a operação] ')).strip().capitalize()
+                    if new != 'Nome' and new != 'Descrição' and new != 'Link' and new != 'Programa' and new != 'Animador' and new != '0': #Verificando se a categoria que ele digitou está valida ou não
+                        error(new)
+                        sleep(0.5)
+                        update_character()
+                    if new == '0':
+                        print('\033[1;31m[OPERAÇÃO CANCELADA]/\033[m')
+                        backToMenu(main)
+                    else:
+                        if new == 'Link': #Se for link vai colocar tudo minúsculo
+                            novo = str(input(f'Digite o novo valor para a categoria "{new}": ')).strip().lower()
+                        else: #Se for qualquer outra categoria vai colocar tudo maísculo
+                            novo = str(input(f'Digite o novo valor para a categoria "{new}": ')).strip().capitalize()
+                        novos_dados = {
+                            f'{new}': novo
+                        } #Adicionando todas as informações em um dicionário para ser compatível
+                        response = requests.put(f'{url}/{nome}', json=novos_dados) #Fazendo a requisição da atualização
+                        if response.status_code == 200:
+                            sleep(0.5)
+                            print('\033[1;32m[ALTERAÇÃO REALIZADA COM SUCESSO]\033[m')
+                            backToMenu(main)
+                        else:
+                            print(f'Ocorreu um erro ao adicionar o personagem. Código de status: {response.status_code}')
+                            backToMenu(main)
+            else:
+                print(f'O personagem "{nome}" não existe.')
+    elif op == '2':
+        backToMenu(main)
+    else:
+        error(op)
+        update_character()
+
+
 def see_image_character(): #Ver o link do personagem
     while True:
         see_character(n=False)
@@ -162,49 +208,6 @@ def see_image_character(): #Ver o link do personagem
             backToMenu(main)
         else:
             error(op)
-
-
-def update_character():
-    see_character(n=False)
-    menu(False, opcoes_updatecharacter(), 37)
-    op = str(input('\033[1mOpção =--> \033[m')).strip()
-    if op == '1':        
-        nome = str(input('Digite o nome do personagem que você deseja atualizar algum dado: ')).capitalize().strip()
-        conf = str(input(f'Você confirma o nome digitado? [S/N] \033[1m{nome}\033[m ')).strip().upper()
-        if conf != 'S':
-            backToMenu(main)
-        else:
-            response = requests.get(f'{url}/{nome}') #Vendo se o personagem existe
-            if response.status_code == 200:
-                while True:
-                    new = str(input('Digite o nome da categoria que você quer alterar: [0 para cancelar toda a operação] ')).strip().capitalize()
-                    if new != 'Nome' and new != 'Descrição' and new != 'Link' and new != 'Programa' and new != 'Animador' and new != '0': #Verificando se a categoria que ele digitou está valida ou não
-                        error(new)
-                    if new == '0':
-                        print('\033[1;31m[OPERAÇÃO CANCELADA]/\033[m')
-                        backToMenu(main)
-                    else:
-                        if new == 'Link': #Se for link vai colocar tudo minúsculo
-                            novo = str(input(f'Digite o novo valor para a categoria "{new}": ')).strip().lower()
-                        else: #Se for qualquer outra categoria vai colocar tudo maísculo
-                            novo = str(input(f'Digite o novo valor para a categoria "{new}": ')).strip().capitalize()
-                        novos_dados = {
-                            f'{new}': novo
-                        } #Adicionando todas as informações em um dicionário para ser compatível
-                        response = requests.put(f'{url}/{nome}', json=novos_dados) #Fazendo a requisição da atualização
-                        if response.status_code == 200:
-                            sleep(0.5)
-                            print('\033[1;32m[ALTERAÇÃO REALIZADA COM SUCESSO]\033[m')
-                            backToMenu(main)
-                        else:
-                            print(f'Ocorreu um erro ao adicionar o personagem. Código de status: {response.status_code}')
-                            backToMenu(main)
-            else:
-                print(f'O personagem "{nome}" não existe.')
-    elif op == '2':
-        backToMenu(main)
-    else:
-        error(op)
 
 
 def sobre(): #Sobre do programa
