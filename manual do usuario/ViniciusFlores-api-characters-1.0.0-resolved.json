@@ -1,0 +1,234 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Character API",
+    "description": "Uma API com todos os métodos CRUD para gerenciamento de personagens",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/ViniciusFlores/api-characters/1.0.0",
+      "description": "SwaggerHub API URL"
+    },
+    {
+      "url": "http://localhost:5000",
+      "description": "URL da API"
+    }
+  ],
+  "paths": {
+    "/characters": {
+      "get": {
+        "summary": "Consultar todos os personagens",
+        "operationId": "getAllCharacters",
+        "responses": {
+          "200": {
+            "description": "A lista de personagens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Character"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Adicionar um novo personagem",
+        "operationId": "addCharacter",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Character"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Mensagem de sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/characters/{name}": {
+      "get": {
+        "summary": "Conseguir o personagem pelo nome",
+        "operationId": "getCharacterByName",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Nome do personagem para consulta",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do personagem",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Character"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Personagem não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar informações pelo nome do personagem",
+        "operationId": "updateCharacterByName",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Nome do personagem para atualização",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Character"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Mensagem de sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar um personagem por um nome",
+        "operationId": "deleteCharacterByName",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Nome do personagem para deletar",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mensagem de sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_2"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Character": {
+        "type": "object",
+        "properties": {
+          "Nome": {
+            "type": "string"
+          },
+          "Link": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "Nome": "Nome do Personagem",
+          "Descrição": "Descrição do Personagem",
+          "Link": "URL da imagem",
+          "Programa": "Programa do Personagem",
+          "Animador": "Animador do Personagem"
+        }
+      },
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Personagem adicionado com sucesso!"
+          }
+        }
+      },
+      "inline_response_404": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Personagem não encontrado!"
+          }
+        }
+      },
+      "inline_response_200_1": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Personagem atualizado com sucesso"
+          }
+        }
+      },
+      "inline_response_200_2": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Personagem deletado com sucesso!"
+          }
+        }
+      }
+    }
+  }
+}

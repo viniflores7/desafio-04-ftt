@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, request #Flask = Servidor | Jsoinfy = Retornar em um formato json | Request = Acessar os dados
+from flask import Flask, jsonify, request
 from tinydb import TinyDB, Query
 
 
-app = Flask(__name__) #Criando um app com o nome do arquivo atual
-db = TinyDB('./api/characters.json', indent = 4) #Criando o banco de dados caso não exista na pasta API
+app = Flask(__name__)
+db = TinyDB('./api/characters.json', indent = 4)
 
 
 # Consultar (todos os dados)
